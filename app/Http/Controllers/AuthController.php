@@ -117,31 +117,41 @@ class AuthController extends Controller
         print($request->user_id);
         $user = User::find($request->user_id);
 
-        if($user->patient)
-        {
-            return response()->json([
-                // "status" => 'success',
-                // "type" => 'patient',
-                "user" => $user,
-            ],200);
+        if (!empty($user)) {
 
-        } elseif($user->doctor)
-        {
+            if($user->patient)
+            {
+                return response()->json([
+                    // "status" => 'success',
+                    // "type" => 'patient',
+                    "user" => $user,
+                ],200);
 
-            return response()->json([
-                // "type" => 'doctor',
-                // "status" => 'success',
-                "user" => $user,
-            ],200);
+            } elseif($user->doctor)
+            {
+
+                return response()->json([
+                    // "type" => 'doctor',
+                    // "status" => 'success',
+                    "user" => $user,
+                ],200);
+            }
+            else
+            {
+
+                return response()->json([
+                    // "status" => 'success',
+                    "user" => $user,
+                ],200);
+            }
         }
-        else
-        {
 
-            return response()->json([
-                // "status" => 'success',
-                "user" => $user,
-            ],200);
-        }
+
+
+        return response()->json([
+            // "status" => 'success',
+            "message" => "No user found",
+        ],404);
 
     }
 
