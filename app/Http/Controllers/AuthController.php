@@ -54,9 +54,6 @@ class AuthController extends Controller
 
     // Login user
     public function login(Request $request){
-        // return response()->json([
-        //     "request" => $request->all()
-        // ]);
         $request->validate([
             'phone' => "required|digits:8",
             'password' => "required|string|min:8"
@@ -66,7 +63,6 @@ class AuthController extends Controller
         // !Auth::attempt(['email' => $validated_data['email'], 'password' => $validated_data['password']]));
         $credentials = $request->only('phone', 'password');
         $token = Auth::attempt($credentials);
-
         if(!$token)
         {
             return response()->json([
@@ -77,8 +73,10 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        // $token = $user->createToken('token')->plainTextToken;
+        $token = $user->createToken('secret')->plainTextToken;
 
+
+        // dd($token);
         // $cookie = cookie('jwt', $token, 60*24);
         // return response(["message" => "Success"])->withCookie($cookie);
 
@@ -87,7 +85,7 @@ class AuthController extends Controller
                 "status" => "success",
                 "type" => "patient",
                 "user" => $user,
-                "token" => $user()->createToken('secret')->plainTextToken,
+                "token" => $token,
             ], 200);
         }
 
@@ -97,7 +95,7 @@ class AuthController extends Controller
                 "status" => "success",
                 "type" => "doctor",
                 "user" => $user,
-                "token" => $user()->createToken('secret')->plainTextToken,
+                "token" => $token,
             ], 200);
         }
 
@@ -105,18 +103,18 @@ class AuthController extends Controller
         return response()->json([
             "status" => "success",
             "user" => $user,
-            "token" => $user()->createToken('secret')->plainTextToken,
+            "token" => $token,
         ], 200);
     }
 
 
     // Get user
     public function user(Request $request) {
-        $request->validate([
-            'user_id' => "required|numeric"
-        ]);
+        // $request->validate([
+        //     'user_id' => "required|numeric"
+        // ]);
 
-        // dd($request->all());
+        print($request->user_id);
         $user = User::find($request->user_id);
 
         if($user->patient)
@@ -132,6 +130,14 @@ class AuthController extends Controller
 
             return response()->json([
                 "type" => 'doctor',
+                "status" => 'success',
+                "user" => $user,
+            ],200);
+        }
+        else
+        {
+
+            return response()->json([
                 "status" => 'success',
                 "user" => $user,
             ],200);
