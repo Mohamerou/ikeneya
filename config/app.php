@@ -186,6 +186,9 @@ return [
          * Package Service Providers...
          */
 
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -209,16 +212,12 @@ return [
     |
     */
 
-    // 'aliases' => [
-    //     // 'ExampleClass' => App\Example\ExampleClass::class,
-    //     'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-    //     'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-    // ],
-
-    'aliases' => Facade::defaultAliases()->merge([
+    'aliases' => [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     // 'JWTAuth'   => PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth::class,
     // 'JWTFactory' => PHPOpenSourceSaver\JWTAuth\Facades\JWTFactory::class,
-    ])->toArray(),
+    'Image' => Intervention\Image\Facades\Image::class,
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+    ]
 
 ];

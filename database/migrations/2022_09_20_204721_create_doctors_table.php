@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id')->constrained("users");
             $table->string('type');
+            $table->string('job_title');
             $table->string('code');
-            $table->string('gender');
+            $table->string('gender')->nullable();
             $table->string('hospital');
-            $table->string('id_card');
-            $table->string('doctor_card');
+            $table->string('id_card')->nullable();
+            $table->string('doctor_card')->nullable();
+            $table->string('profil_pic')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

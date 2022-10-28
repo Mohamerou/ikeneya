@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,18 +25,23 @@ class AuthController extends Controller
         $validated_data = $request->validate([
             'first_name' => "required|String|min:3|max:255",
             'last_name' => "required|String|min:3|max:255",
-            'phone' => "required|digits:8",
-            'password' => "required|String"
+            'phone' => "required|string|min:8|max:8",
+            'address' => "required|string"
         ]);
 
         $new_user = User::create([
             'first_name' => $validated_data['first_name'],
             'last_name' => $validated_data['last_name'],
             'phone' => $validated_data['phone'],
-            'password' => Hash::make($validated_data['password'])
+            'address' => $validated_data['address']
         ]);
 
         if(!is_null($new_user)) {
+            // $random_password = Hash::make(Str::random(9));
+            $random_password = Hash::make("password");
+            $new_user->password = $random_password;
+            $new_user->save();
+
             return response($new_user, Response::HTTP_ACCEPTED);
         }
 
@@ -50,7 +56,7 @@ class AuthController extends Controller
         // ]);
         $request->validate([
             'phone' => "required|digits:8",
-            'password' => "required|String"
+            'password' => "required|string|min:8"
         ]);
 
 
@@ -80,16 +86,37 @@ class AuthController extends Controller
                 'token' => $token,
                 'type'  => 'bearer',
             ],
-        ]);
+        ], 200);
     }
 
 
     // Get user
-    public function user() {
-        return response()->json([
-            "status" => 'success',
-            "user" => Auth::user(),
+    public function user(Request $request) {
+        $request->validate([
+            'user_id' => "required|numeric"
         ]);
+
+        // dd($request->all());
+        $user = User::find($request->user_id);
+
+        if($user->patient)
+        {
+            return response()->json([
+                "status" => 'success',
+                "type" => 'patient',
+                "user" => $user,
+            ],403);
+
+        } elseif($user->doctor)
+        {
+
+            return response()->json([
+                "type" => 'doctor',
+                "status" => 'success',
+                "user" => $user,
+            ],403);
+        }
+
     }
 
     // Logout authenticated user

@@ -14,10 +14,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'status' => 'success',
-            'users' => Patient::all()
-        ]);
+        return view("admin.patient.index");
     }
 
     /**

@@ -14,12 +14,7 @@ class HospitalController extends Controller
      */
     public function index()
     {
-        //
-
-        return response()->json([
-            'status'    => 'success',
-            'hospitals'  => Hospital::all()
-        ]);
+        return view("admin.hospital.index");
     }
 
     /**

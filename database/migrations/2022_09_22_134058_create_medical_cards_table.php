@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('medical_cards', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('urgency_contact1_full_name')->nullable();
             $table->string('urgency_contact1_address')->nullable();
             $table->string('urgency_contact1_phone')->nullable();
@@ -32,19 +32,23 @@ return new class extends Migration
             $table->boolean('physical_disability')->nullable();
             $table->boolean('others')->nullable();
             $table->text('others_precision')->nullable();
-            $table->string('frequency')->nullable();
-            $table->string('gravity')->nullable();
+            $table->string('gravity_frequency')->nullable();
             $table->boolean('alergic')->nullable();
             $table->text('alergy_precision')->nullable();
             $table->boolean('special_diet')->nullable();
             $table->text('special_diet_precision')->nullable();
+            $table->text('special_medical_treatment')->nullable();
+            $table->boolean('special_treatment')->nullable();
             $table->boolean('tetanus_vaccine')->nullable();
             $table->date('tetanus_vaccine_date')->nullable();
             $table->boolean('tetanus_serum')->nullable();
             $table->date('tetanus_serum_date')->nullable();
             $table->string('blood_group')->nullable();
-            $table->boolean('Rhesus')->nullable();
+            $table->string('Rhesus')->nullable();
             $table->string('possible_remarks')->nullable();
+            $table->string('unique_token')->nullable();
+            $table->string('qr_code')->nullable();
+            $table->string('medical_card_pdf')->nullable();
             $table->timestamps();
         });
     }

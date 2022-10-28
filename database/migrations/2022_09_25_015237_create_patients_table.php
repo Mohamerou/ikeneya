@@ -15,13 +15,16 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('medical_card_id')->nullable()->constrained('medical_cards');
             $table->string('patient_code');
+            $table->string('profil_pic');
+            $table->string('id_card');
             $table->string('gender');
-            $table->string('address');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
+
     }
 
     /**

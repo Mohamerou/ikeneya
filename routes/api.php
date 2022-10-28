@@ -21,9 +21,12 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'login'])->nam
 // Auth protected routes
 Route::middleware('auth:api')->group(function () {
     Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
-    Route::get('utilisateur', [App\Http\Controllers\AuthController::class, 'user']);
+    Route::get('user-profile', [App\Http\Controllers\UserController::class, 'profile']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+    Route::post('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 });
+
+
 
 
 // User related routes
@@ -32,11 +35,14 @@ Route::get('user-show/{id}', [App\Http\Controllers\UserController::class, 'show'
 Route::post('user-create', [App\Http\Controllers\AuthController::class, 'register']);
 Route::put('user-update/{id}', [App\Http\Controllers\UserController::class, 'update']);
 Route::delete('user-delete/{id}', [App\Http\Controllers\UserController::class, 'destroy']);
+// User notify doctor
+Route::post('check-for-notifications/', [App\Http\Controllers\NotificationController::class, 'CheckNotification'])->name('notification.check');
+Route::post('rdv-request/', [App\Http\Controllers\NotificationController::class, 'RdvRequest'])->name('rdv.request');
 
 // Doctor related routes
 Route::get('doctors', [App\Http\Controllers\DoctorController::class, 'index']);
 Route::get('doctor-show/{id}', [App\Http\Controllers\DoctorController::class, 'show']);
-Route::post('doctor-create/{id}', [App\Http\Controllers\DoctorController::class, 'store']);
+Route::post('doctor-create', [App\Http\Controllers\DoctorController::class, 'store']);
 Route::put('doctor-update/{id}', [App\Http\Controllers\DoctorController::class, 'update']);
 Route::delete('doctor-delete/{id}', [App\Http\Controllers\DoctorController::class, 'destroy']);
 
