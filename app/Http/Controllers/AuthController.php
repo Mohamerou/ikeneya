@@ -120,8 +120,8 @@ class AuthController extends Controller
         if($user->patient)
         {
             return response()->json([
-                "status" => 'success',
-                "type" => 'patient',
+                // "status" => 'success',
+                // "type" => 'patient',
                 "user" => $user,
             ],200);
 
@@ -129,8 +129,8 @@ class AuthController extends Controller
         {
 
             return response()->json([
-                "type" => 'doctor',
-                "status" => 'success',
+                // "type" => 'doctor',
+                // "status" => 'success',
                 "user" => $user,
             ],200);
         }
@@ -138,7 +138,7 @@ class AuthController extends Controller
         {
 
             return response()->json([
-                "status" => 'success',
+                // "status" => 'success',
                 "user" => $user,
             ],200);
         }
