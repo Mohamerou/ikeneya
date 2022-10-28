@@ -109,13 +109,13 @@ class AuthController extends Controller
 
 
     // Get user details
-    public function user(Request $request) {
-        $request->validate([
-            'user_id' => "required|numeric"
-        ]);
+    public function user() {
+        // $request->validate([
+        //     'user_id' => "required|numeric"
+        // ]);
 
-        print($request->user_id);
-        $user = User::find($request->user_id);
+        // print($request->user_id);
+        $user = Auth::user();
 
         if (!empty($user)) {
 
@@ -151,7 +151,7 @@ class AuthController extends Controller
         return response()->json([
             // "status" => 'success',
             "message" => "No user found",
-        ],404);
+        ],401);
 
     }
 
