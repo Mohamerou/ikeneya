@@ -23,8 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
     Route::get('user-profile', [App\Http\Controllers\UserController::class, 'profile']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
-    Route::post('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 });
+
+
+Route::post('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 
 
 
