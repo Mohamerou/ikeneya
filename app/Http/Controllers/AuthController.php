@@ -108,11 +108,11 @@ class AuthController extends Controller
     }
 
 
-    // Get user
+    // Get user details
     public function user(Request $request) {
-        // $request->validate([
-        //     'user_id' => "required|numeric"
-        // ]);
+        $request->validate([
+            'user_id' => "required|numeric"
+        ]);
 
         print($request->user_id);
         $user = User::find($request->user_id);
