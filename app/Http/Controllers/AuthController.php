@@ -42,7 +42,10 @@ class AuthController extends Controller
             $new_user->password = $random_password;
             $new_user->save();
 
-            return response($new_user, Response::HTTP_ACCEPTED);
+            return response()->json([
+                'user'      => $new_user,
+                'token'     => $new_user->createToken('secret')->plainTextToken
+            ], Response::HTTP_ACCEPTED);
         }
 
         return response()->json(["message" => "Un problème est survenu lors de l'enregistrement"], 404);
@@ -79,13 +82,30 @@ class AuthController extends Controller
         // $cookie = cookie('jwt', $token, 60*24);
         // return response(["message" => "Success"])->withCookie($cookie);
 
+        if ($user->patient) {
+            return response()->json([
+                "status" => "success",
+                "type" => "patient",
+                "user" => $user,
+                "token" => $user()->createToken('secret')->plainTextToken,
+            ], 200);
+        }
+
+        if($user->doctor)
+        {
+            return response()->json([
+                "status" => "success",
+                "type" => "doctor",
+                "user" => $user,
+                "token" => $user()->createToken('secret')->plainTextToken,
+            ], 200);
+        }
+
+
         return response()->json([
             "status" => "success",
             "user" => $user,
-            "authorization" => [
-                'token' => $token,
-                'type'  => 'bearer',
-            ],
+            "token" => $user()->createToken('secret')->plainTextToken,
         ], 200);
     }
 
@@ -105,7 +125,7 @@ class AuthController extends Controller
                 "status" => 'success',
                 "type" => 'patient',
                 "user" => $user,
-            ],403);
+            ],200);
 
         } elseif($user->doctor)
         {
@@ -114,15 +134,15 @@ class AuthController extends Controller
                 "type" => 'doctor',
                 "status" => 'success',
                 "user" => $user,
-            ],403);
+            ],200);
         }
 
     }
 
     // Logout authenticated user
     public function logout(){
-        // return response()->json(["request->all()"]);
-        Auth::logout();
+        $user = Auth::user();
+        $user()->tokens()->delete();
 
          return response()->json([
             "status" => "success",

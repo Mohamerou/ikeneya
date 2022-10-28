@@ -196,7 +196,7 @@ class Patient extends Component
             $this->patient_card_frame = $patient->patient->patient_card;
 
         } else {
-            return redirect()->to("/patient");
+            return redirect()->to("/patients");
         }
 
     }
