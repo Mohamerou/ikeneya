@@ -39,7 +39,10 @@ class Doctor extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $first_name, $last_name, $phone, $email, $address, $type, $job_title, $id_card, $profil_pic, $doctor_card, $gender, $doctor_id, $hospital, $doctor_users;
-    public $id_card_frame, $profil_pic_frame, $doctor_card_frame;
+    public $old_id_card_frame = null;
+    public $old_profil_pic_frame = null;
+    public $old_doctor_card_frame = null;
+
     // public $hospitals;
 
     public function rules()
@@ -52,9 +55,6 @@ class Doctor extends Component
             'type' =>  "required|string",
             'job_title' =>  "required|string",
             'gender' =>  "required|string|min:1|max:1",
-            'id_card' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
-            'doctor_card' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
-            'profil_pic' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
             'email' =>  "required|email",
             'phone' =>  "required|digits:8",
         ];
@@ -63,57 +63,61 @@ class Doctor extends Component
 
     public function storeProfilPic()
     {
-        if(!$this->profil_pic_frame)
+        if(!is_null($this->profil_pic))
         {
-             return null;
+
+            $img    = Image::make($this->profil_pic)->encode('jpg');
+
+
+            $img->resize(200, 200);
+            $name   = Str::random().'.jpg';
+            Storage::disk('public')->put($name, $img);
+
+            return $name;
+        } else {
+            return null;
         }
-
-        $img    = Image::make($this->profil_pic_frame)->encode('jpg');
-
-
-        $img->resize(200, 200);
-        $name   = Str::random().'.jpg';
-        Storage::disk('public')->put($name, $img);
-
-        return $name;
     }
 
 
     public function storeIdCard()
     {
-        if(!$this->id_card_frame)
+        if(!is_null($this->id_card))
         {
-             return null;
+
+            $img = Image::make($this->id_card)->encode('jpg');
+
+
+            $img->resize(200, 200);
+
+            $name   = Str::random().'.jpg';
+            Storage::disk('public')->put($name, $img);
+
+            return $name;
+        } else {
+            return null;
         }
-
-        $img = Image::make($this->id_card_frame)->encode('jpg');
-
-
-        $img->resize(200, 200);
-
-        $name   = Str::random().'.jpg';
-        Storage::disk('public')->put($name, $img);
-
-        return $name;
     }
 
 
     public function storeDoctorCard()
     {
-        if(!$this->doctor_card_frame)
+        if(!is_null($this->doctor_card))
         {
-             return null;
+
+            $img = Image::make($this->doctor_card)->encode('jpg');
+
+
+            $img->resize(200, 200);
+
+            $name   = Str::random().'.jpg';
+            Storage::disk('public')->put($name, $img);
+
+            return $name;
+        } else{
+            return null;
         }
 
-        $img = Image::make($this->doctor_card_frame)->encode('jpg');
-
-
-        $img->resize(200, 200);
-
-        $name   = Str::random().'.jpg';
-        Storage::disk('public')->put($name, $img);
-
-        return $name;
     }
 
     public function generateDoctorCode(ModelsUser $doctor)
@@ -195,6 +199,34 @@ class Doctor extends Component
             "hospital" => $validatedData['hospital'],
         ]);
 
+
+
+        $id_card = $this->storeIdCard();
+        $profil_pic = $this->storeProfilPic();
+        $doctor_card = $this->storeDoctorCard();
+
+
+
+        if($id_card != null) {
+            $updated_patient_user_info = ModelsDoctor::where('user_id', $this->doctor_id)->update([
+                'id_card' => $id_card,
+            ]);
+        }
+
+        if($profil_pic != null) {
+            $updated_patient_user_info = ModelsDoctor::where('user_id', $this->doctor_id)->update([
+                'profil_pic' => $profil_pic,
+            ]);
+        }
+
+        if($doctor_card != null) {
+            $updated_patient_user_info = ModelsDoctor::where('user_id', $this->doctor_id)->update([
+                'doctor_$doctor_card' => $doctor_card,
+            ]);
+        }
+
+
+
         Session::flash('message', 'Hopital mise à jour avec succès');
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-modal');
@@ -217,14 +249,26 @@ class Doctor extends Component
             $this->phone = $doctor->phone;
             $this->email = $doctor->email;
             $this->job_title = $doctor->doctor->job_title;
-            $this->id_card = $doctor->doctor->job_title;
-            $this->profil_pic = $doctor->doctor->profil_pic;
-            $this->doctor_card = $doctor->doctor->doctor_card;
             $this->gender = $doctor->doctor->gender;
             $this->hospital = $doctor->doctor->hospital;
-            $this->doctor_card_frame = $doctor->doctor->id_card;
-            $this->profil_pic_frame = $doctor->doctor->profil_pic;
-            $this->doctor_card_frame = $doctor->doctor->doctor_card;
+
+
+
+            if($doctor->doctor->id_card != null)
+            {
+                $this->old_id_card_frame = $doctor->doctor->id_card;
+            }
+
+            if($doctor->doctor->profil_pic != null)
+            {
+                $this->old_profil_pic_frame = $doctor->doctor->profil_pic;
+            }
+
+            if($doctor->doctor->doctor_card != null)
+            {
+                $this->old_doctor_card_frame = $doctor->doctor->doctor_card;
+            }
+
 
         } else {
             return redirect()->to("/doctor");
@@ -252,30 +296,34 @@ class Doctor extends Component
         $this->first_name = "";
         $this->last_name = "";
         $this->address = "";
+        $this->email = "";
+        $this->gender = "";
         $this->type = "";
+        $this->hospital = "";
         $this->job_title = "";
-        $this->id_card = "";
-        $this->doctor_card = "";
+        $this->id_card = null;
+        $this->profil_pic = null;
+        $this->doctor_card = null;
         $this->phone = "";
         $this->doctor_id = "";
-        $this->id_card_frame = "";
-        $this->profil_pic_frame = "";
-        $this->doctor_card_frame = "";
+        $this->old_id_card_frame = "";
+        $this->old_profil_pic_frame = "";
+        $this->old_doctor_card_frame = "";
     }
 
     public function handleProfilPicUploaded($imageData)
     {
-        $this->profil_pic_frame = $imageData;
+        $this->profil_pic = $imageData;
     }
 
     public function handleIdCardUploaded($imageData)
     {
-        $this->id_card_frame = $imageData;
+        $this->id_card = $imageData;
     }
 
     public function handleDoctorCardUploaded($imageData)
     {
-        $this->doctor_card_frame = $imageData;
+        $this->doctor_card = $imageData;
     }
 
 

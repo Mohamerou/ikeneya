@@ -24,13 +24,6 @@
                 @endif
 
 
-
-    {{-- <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-          <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-      </div><!-- End Search Bar --> --}}
       <form class="col-md-4 mx-auto d-flex" role="search" wire:submit="search">
         <input class="form-control me-2" type="search" placeholder="Trouver..." aria-label="Search" wire:model="search">
         <button class="btn btn-outline-success" type="submit">Trouver</button>
@@ -116,20 +109,20 @@
                                     <div class="col-md-6">
                                         <label for="profil_pic" class="col-sm-2 col-form-label">Photo de profil</label>
                                         <div class="col-sm-10">
-                                        <input wire:model="profil_pic" wire:change="$emit('profil_pic_chosen')" type="file"  id="profil_pic" class="form-control">
+                                        <input wire:model="profil_pic" type="file"  id="profil_pic" class="form-control">
                                         @error('profil_pic') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                         </div>
                                     </div>
 
-                                    @if($profil_pic_frame)
+                                    @if($profil_pic)
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-body">
                                             <h5 class="card-title"></h5>
 
-                                                <img id="" src="{{ $profil_pic_frame }}" class="img-fluid" >
+                                                <img id="" src="{{ $profil_pic->temporaryUrl() }}" class="img-fluid" >
                                                 <div class="card-body">
-                                                <h5 class="card-title">Photo de profil</h5>
+                                                <h5 class="card-title">Prévisualisation</h5>
                                                 </div>
 
 
@@ -142,25 +135,22 @@
                                 <div class="col-md-6">
                                     <label for="id_card" class="col-sm-2 col-form-label">Carte d'identité</label>
                                     <div class="col-sm-10">
-                                      <input wire:model="id_card" wire:change="$emit('id_card_chosen')" type="file" id="id_card" class="form-control">
+                                      <input wire:model="id_card" type="file" id="id_card" class="form-control">
                                       @error('id_card') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                     </div>
                                 </div>
 
 
 
-                                @if($id_card_frame)
+                                @if($id_card)
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
-
-                                            <img id="" src="{{  $id_card_frame  }}" class="img-fluid" >
+                                            <img id="" src="{{  $id_card->temporaryUrl()  }}" class="img-fluid" >
                                             <div class="card-body">
-                                            <h5 class="card-title">Pièce d'identité</h5>
+                                                <h5 class="card-title">Prévisualisation</h5>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -207,20 +197,20 @@
                                 <div class="col-md-6">
                                     <label for="doctor_card" class="col-sm-2 col-form-label">Carte médécin</label>
                                     <div class="col-sm-10">
-                                      <input wire:model="doctor_card" wire:change="$emit('doctor_card_chosen')" type="file" id="doctor_card" class="form-control">
+                                      <input wire:model="doctor_card" type="file" id="doctor_card" class="form-control">
                                       @error('doctor_card') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                     </div>
                                 </div>
 
-                                @if($doctor_card_frame)
+                                @if($doctor_card)
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
 
-                                            <img  src="{{ $doctor_card_frame }}" class="img-fluid" >
+                                            <img  src="{{ $doctor_card->temporaryUrl() }}" class="img-fluid" >
                                             <div class="card-body">
-                                            <h5 class="card-title">Carte médécin</h5>
+                                            <h5 class="card-title">Prévisualisation</h5>
                                             </div>
 
 
@@ -237,20 +227,6 @@
                                   @error('address') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                 </div>
                               </div>
-                              {{-- <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
-                                <div class="col-sm-10">
-                                  <input class="form-control" type="file" id="formFile">
-                                </div>
-                              </div> --}}
-
-
-                              {{-- <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Soumission</label>
-                                <div class="col-sm-10">
-                                  <button type="submit" class="btn btn-primary">Créer</button>
-                                </div>
-                              </div> --}}
 
                           </div>
                         </div>
@@ -362,57 +338,93 @@
                                     <div class="col-md-6">
                                         <label for="profil_pic" class="col-sm-2 col-form-label">Photo de profil</label>
                                         <div class="col-sm-10">
-                                        <input wire:model="profil_pic" wire:change="$emit('profil_pic_chosen')" type="file"  id="profil_pic" class="form-control">
+                                        <input wire:model="profil_pic" type="file"  id="profil_pic" class="form-control">
                                         @error('profil_pic') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                         </div>
                                     </div>
 
-                                    @if($profil_pic_frame)
-                                    <div class="col-md-6">
+
+                                    @if ($profil_pic)
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                <h5 class="card-title"></h5>
+
+                                                    <img  src="{{ $profil_pic->temporaryUrl() }}" class="img-fluid" >
+                                                    <div class="card-body">
+                                                    <h5 class="card-title">Prévisualisation de la nouvelle photo de profil</h5>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+                                @if(!is_null($old_profil_pic_frame))
+                                    <div class="col-md-6 row mb-3">
                                         <div class="card">
                                             <div class="card-body">
                                             <h5 class="card-title"></h5>
 
-                                                <img id="" src="{{ $profil_pic_frame }}" class="img-fluid" >
+                                                <img  src="{{ asset('storage/'.$old_profil_pic_frame) }}" class="img-fluid" >
                                                 <div class="card-body">
-                                                <h5 class="card-title">Photo de profil</h5>
+                                                <h5 class="card-title">Ancienne photo de profil</h5>
                                                 </div>
 
 
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
-                                </div>
+                                @endif
+
                               <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="id_card" class="col-sm-2 col-form-label">Carte d'identité</label>
                                     <div class="col-sm-10">
-                                      <input wire:model="id_card" wire:change="$emit('id_card_chosen')" type="file" id="id_card" class="form-control">
+                                      <input wire:model="id_card" type="file" id="id_card" class="form-control">
                                       @error('id_card') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                     </div>
                                 </div>
 
-
-
-                                @if($id_card_frame)
+                                @if ($id_card)
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
 
-                                            <img id="" src="{{  $id_card_frame  }}" class="img-fluid" >
+                                            <img  src="{{ $id_card->temporaryUrl() }}" class="img-fluid" >
                                             <div class="card-body">
-                                            <h5 class="card-title">Pièce d'identité</h5>
+                                            <h5 class="card-title">Prévisualisation de la nouvelle pièce d'identité</h5>
                                             </div>
 
 
                                         </div>
                                     </div>
                                 </div>
+
                                 @endif
 
                               </div>
+
+                              @if(!is_null($old_id_card_frame))
+                              <div class="col-md-6 row mb-3">
+                                  <div class="card">
+                                      <div class="card-body">
+                                      <h5 class="card-title"></h5>
+
+                                          <img  src="{{ asset('storage/'.$old_id_card_frame) }}" class="img-fluid" >
+                                          <div class="card-body">
+                                          <h5 class="card-title">Ancienne pièce d'identité</h5>
+                                          </div>
+
+
+                                      </div>
+                                  </div>
+                              </div>
+                            @endif
 
                               <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Hopital affilié</label>
@@ -453,28 +465,47 @@
                                 <div class="col-md-6">
                                     <label for="doctor_card" class="col-sm-2 col-form-label">Carte médécin</label>
                                     <div class="col-sm-10">
-                                      <input wire:model="doctor_card" wire:change="$emit('doctor_card_chosen')" type="file" id="doctor_card" class="form-control">
+                                      <input wire:model="doctor_card" type="file" id="doctor_card" class="form-control">
                                       @error('doctor_card') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                     </div>
                                 </div>
 
-                                @if($doctor_card_frame)
+
+                                @if ($doctor_card)
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
 
-                                            <img  src="{{ $doctor_card_frame }}" class="img-fluid" >
+                                            <img  src="{{ $doctor_card->temporaryUrl() }}" class="img-fluid" >
                                             <div class="card-body">
-                                            <h5 class="card-title">Carte médécin</h5>
+                                            <h5 class="card-title">Prévisualisation de la nouvelle pièce d'identité</h5>
                                             </div>
 
 
                                         </div>
                                     </div>
                                 </div>
+
                                 @endif
                               </div>
+
+                              @if(!is_null($old_doctor_card_frame))
+                              <div class="col-md-6 row mb-3">
+                                  <div class="card">
+                                      <div class="card-body">
+                                      <h5 class="card-title"></h5>
+
+                                          <img  src="{{ asset('storage/'.$old_doctor_card_frame) }}" class="img-fluid" >
+                                          <div class="card-body">
+                                          <h5 class="card-title">Ancienne carte médecin</h5>
+                                          </div>
+
+
+                                      </div>
+                                  </div>
+                              </div>
+                            @endif
 
                           </div>
                         </div>

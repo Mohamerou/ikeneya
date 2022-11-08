@@ -31,17 +31,16 @@ class Patient extends Component
     public function updatingSearch()
 
     {
-
         $this->resetPage();
-
     }
+
+
 
     protected $paginationTheme = 'bootstrap';
 
     public $first_name, $last_name, $phone, $address, $id_card, $profil_pic, $gender, $patient_id, $patients;
-    public $id_card_frame, $profil_pic_frame;
-
-
+    public $old_id_card_frame = null;
+    public $old_profil_pic_frame = null;
 
     public function rules()
     {
@@ -50,8 +49,8 @@ class Patient extends Component
             'last_name' =>  "required|string",
             'address' =>  "required|string",
             'gender' =>  "required|string|min:1|max:1",
-            'id_card' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
-            'profil_pic' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
+            // 'id_card' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
+            // 'profil_pic' =>  "required|file|mimes:jpeg,png,jpg,gif|max:4024",
             'phone' =>  "required|digits:8",
         ];
     }
@@ -61,38 +60,42 @@ class Patient extends Component
 
     public function storeProfilPic()
     {
-        if(!$this->profil_pic_frame)
+        if(!is_null($this->profil_pic))
         {
-             return null;
+            $img    = Image::make($this->profil_pic)->encode('jpg');
+
+
+            $img->resize(200, 200);
+            $name   = Str::random().'.jpg';
+            Storage::disk('public')->put($name, $img);
+
+            return $name;
+        } else {
+
+            return null;
         }
 
-        $img    = Image::make($this->profil_pic_frame)->encode('jpg');
-
-
-        $img->resize(200, 200);
-        $name   = Str::random().'.jpg';
-        Storage::disk('public')->put($name, $img);
-
-        return $name;
     }
 
 
     public function storeIdCard()
     {
-        if(!$this->id_card_frame)
+        if(!is_null($this->id_card))
         {
-             return null;
+
+            $img = Image::make($this->id_card)->encode('jpg');
+
+
+            $img->resize(200, 200);
+
+            $name   = Str::random().'.jpg';
+            Storage::disk('public')->put($name, $img);
+
+            return $name;
+        } else {
+
+            return null;
         }
-
-        $img = Image::make($this->id_card_frame)->encode('jpg');
-
-
-        $img->resize(200, 200);
-
-        $name   = Str::random().'.jpg';
-        Storage::disk('public')->put($name, $img);
-
-        return $name;
     }
 
 
@@ -163,11 +166,21 @@ class Patient extends Component
             "address" => $validatedData['address'],
         ]);
 
-        $updated_patient_user_info = ModelsPatient::where('user_id', $this->patient_id)->update([
-            "profil_pic" => $validatedData['profil_pic'],
-            "id_card" => $validatedData['id_card'],
-            "gender" => $validatedData['gender'],
-        ]);
+
+        $id_card = $this->storeIdCard();
+        $profil_pic = $this->storeProfilPic();
+
+        if($id_card != null) {
+            $updated_patient_user_info = ModelsPatient::where('user_id', $this->patient_id)->update([
+                'id_card' => $id_card,
+            ]);
+        }
+
+        if($profil_pic != null) {
+            $updated_patient_user_info = ModelsPatient::where('user_id', $this->patient_id)->update([
+                'profil_pic' => $profil_pic,
+            ]);
+        }
 
         Session::flash('message', 'Infos du patient mise à jour avec succès');
         $this->resetInputs();
@@ -189,11 +202,17 @@ class Patient extends Component
             $this->last_name = $patient->last_name;
             $this->address = $patient->address;
             $this->phone = $patient->phone;
-            $this->id_card = $patient->patient->job_title;
-            $this->profil_pic = $patient->patient->profil_pic;
             $this->gender = $patient->patient->gender;
-            $this->profil_pic_frame = $patient->patient->profil_pic;
-            $this->patient_card_frame = $patient->patient->patient_card;
+
+            if($patient->patient->id_card != null)
+            {
+                $this->old_id_card_frame = $patient->patient->id_card;
+            }
+
+            if($patient->patient->profil_pic != null)
+            {
+                $this->old_profil_pic_frame = $patient->patient->profil_pic;
+            }
 
         } else {
             return redirect()->to("/patients");
@@ -223,21 +242,23 @@ class Patient extends Component
         $this->first_name = "";
         $this->last_name = "";
         $this->address = "";
-        $this->id_card = "";
+        $this->gender = "";
+        $this->id_card = null;
+        $this->profil_pic = null;
         $this->phone = "";
         $this->patient_id = "";
-        $this->id_card_frame = "";
-        $this->profil_pic_frame = "";
+        $this->old_id_card_frame = "";
+        $this->old_profil_pic_frame = "";
     }
 
     public function handleProfilPicUploaded($imageData)
     {
-        $this->profil_pic_frame = $imageData;
+        $this->profil_pic = $imageData;
     }
 
     public function handleIdCardUploaded($imageData)
     {
-        $this->id_card_frame = $imageData;
+        $this->id_card = $imageData;
     }
 
 

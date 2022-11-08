@@ -124,23 +124,16 @@
                                         </div>
                                     </div>
 
-                                    @if($profil_pic_frame)
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body">
-                                            <h5 class="card-title"></h5>
+                                    @if ($profil_pic)
 
-                                                <img id="" src="{{ $profil_pic_frame }}" class="img-fluid" >
-                                                <div class="card-body">
-                                                <h5 class="card-title">Photo de profil</h5>
-                                                </div>
+                                    Previsualisation:
 
+                                        <img src="{{ $profil_pic->temporaryUrl() }}" class="w-50 img-fluid">
 
-                                            </div>
-                                        </div>
-                                    </div>
                                     @endif
                                 </div>
+
+
                               <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="id_card" class="col-sm-2 col-form-label">Carte d'identité</label>
@@ -151,22 +144,12 @@
                                 </div>
 
 
+                                @if ($id_card)
 
-                                @if($id_card_frame)
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                        <h5 class="card-title"></h5>
+                                Previsualisation:
 
-                                            <img id="" src="{{  $id_card_frame  }}" class="img-fluid" >
-                                            <div class="card-body">
-                                            <h5 class="card-title">Pièce d'identité</h5>
-                                            </div>
+                                    <img src="{{ $id_card->temporaryUrl() }}" class="w-50 img-fluid">
 
-
-                                        </div>
-                                    </div>
-                                </div>
                                 @endif
 
                               </div>
@@ -201,21 +184,11 @@
             <div class="card">
               <div class="card-body">
 
-                {{-- @if (Session::has('message'))
-                    <h5 class="alert alert-success text-center">{{ session('message') }}</h5>
-                @endif --}}
-{{--
-
-                <!-- Large Modal -->
-                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" wire:click="resetInputs" data-bs-target="#patientModal">
-                  Mettre à jour les infos du patient
-                </button> --}}
-
                 <div wire:ignore.self class="modal fade" id="updatePatientModal" tabindex="-1">
                   <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">Modifier le infos d4un patient</h5>
+                        <h5 class="modal-title">Modifier le infos du patient</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click="resetInputs" aria-label="Close"></button>
                       </div>
 
@@ -278,23 +251,40 @@
                                         </div>
                                     </div>
 
-                                    @if($profil_pic_frame)
-                                    <div class="col-md-6">
+                                    @if ($profil_pic)
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                <h5 class="card-title"></h5>
+
+                                                    <img  src="{{ $profil_pic->temporaryUrl() }}" class="img-fluid" >
+                                                    <div class="card-body">
+                                                    <h5 class="card-title">Prévisualisation de la nouvelle photo de profil</h5>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+                                @if(!is_null($old_profil_pic_frame))
+                                    <div class="col-md-6 row mb-3">
                                         <div class="card">
                                             <div class="card-body">
                                             <h5 class="card-title"></h5>
 
-                                                <img id="" src="{{ $profil_pic_frame }}" class="img-fluid" >
+                                                <img  src="{{ asset('storage/'.$old_profil_pic_frame) }}" class="img-fluid" >
                                                 <div class="card-body">
-                                                <h5 class="card-title">Photo de profil</h5>
+                                                <h5 class="card-title">Ancienne photo de profil</h5>
                                                 </div>
 
 
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
-                                </div>
+                                @endif
                               <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="id_card" class="col-sm-2 col-form-label">Carte d'identité</label>
@@ -304,26 +294,42 @@
                                     </div>
                                 </div>
 
-
-
-                                @if($id_card_frame)
+                                @if ($id_card)
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
 
-                                            <img id="" src="{{  $id_card_frame  }}" class="img-fluid" >
+                                            <img  src="{{ $id_card->temporaryUrl() }}" class="img-fluid" >
                                             <div class="card-body">
-                                            <h5 class="card-title">Pièce d'identité</h5>
+                                            <h5 class="card-title">Prévisualisation de la nouvelle pièce d'identité</h5>
                                             </div>
 
 
                                         </div>
                                     </div>
                                 </div>
+
                                 @endif
 
                               </div>
+
+                              @if(!is_null($old_id_card_frame))
+                              <div class="col-md-6 row mb-3">
+                                  <div class="card">
+                                      <div class="card-body">
+                                      <h5 class="card-title"></h5>
+
+                                          <img  src="{{ asset('storage/'.$old_id_card_frame) }}" class="img-fluid" >
+                                          <div class="card-body">
+                                          <h5 class="card-title">Ancienne pièce d'identité</h5>
+                                          </div>
+
+
+                                      </div>
+                                  </div>
+                              </div>
+                            @endif
 
                           </div>
                         </div>
