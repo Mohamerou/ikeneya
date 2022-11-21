@@ -15,13 +15,16 @@ return new class extends Migration
     {
         Schema::create('rdv_responses', function (Blueprint $table) {
             $table->id();
-            $table->string('patient_id');
-            $table->string('doctor_id');
-            $table->string('doctor_fullname');
+            $table->foreignId('patient_id')->constrained('users');
+            $table->foreignId('doctor_id')->constrained('users');
             $table->string('doctor_phone');
-            $table->string('rdv_content');
-            $table->string('rdv_date');
-            $table->string('doctor_urlAvatar');
+            $table->string('doctor_name');
+            $table->string('doctor_profil_pic');
+            $table->string('rdv_response_subject')->nullable();
+            $table->string('rdv_response_content')->nullable();
+            $table->dateTime('rdv_response_date')->nullable();
+            $table->dateTime('rdv_time')->nullable();
+            $table->string('rdv_response_status')->default('reply');
             $table->timestamps();
         });
     }

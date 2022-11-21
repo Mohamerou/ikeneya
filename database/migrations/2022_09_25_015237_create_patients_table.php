@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('profil_pic');
             $table->string('id_card');
             $table->string('gender');
+            $table->foreignId('added_by_user_id')->constrained('users');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

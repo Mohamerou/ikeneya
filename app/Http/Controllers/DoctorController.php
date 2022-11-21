@@ -3,13 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use Illuminate\Support\Facades\Response;
 use App\Models\User;
+use App\Models\MedicalCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DoctorController extends Controller
 {
+
+
+
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -28,6 +39,35 @@ class DoctorController extends Controller
     public function create()
     {
         //
+    }
+
+
+    // Read medical data pdf file
+    public function readPdf(Request $request)
+    {
+
+        Log::info($request->all());
+        $validated_data = request()->validate([
+            'unique_token' => 'required|string',
+        ]);
+
+        $medicalCard = MedicalCard::where('unique_token', $validated_data['unique_token'])->first();
+
+        if(!empty($medicalCard))
+        {
+            // $pdfUrl = "";
+            return response()->json([
+                'status' => 'success',
+                'medical_card_pdf' => $medicalCard->medical_card_pdf,
+            ], 200);
+        }
+
+        return response()->json([
+            'error' => 'Aucune correspondance trouvée!',
+            'medical_card_pdf' => "",
+            'message' => 'Aucune correspondance trouvée!'
+        ],403);
+
     }
 
     /**

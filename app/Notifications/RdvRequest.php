@@ -11,6 +11,8 @@ class RdvRequest extends Notification
 {
     use Queueable;
 
+    public $rdv;
+
     /**
      * Create a new notification instance.
      *
@@ -50,13 +52,19 @@ class RdvRequest extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'subject'           => $this->rdv->subject,
-            'from'              => $this->rdv->patient_fullname." ".$this->rdv->patient_phone,
-            'content'           => $this->rdv->content,
-            'date'              => $this->rdv->date,
-            'patient_urlAvatar' => $this->rdv->patient_urlAvatar,
+            'patient_id'            => $this->rdv['patient_id'],
+            'doctor_id'             => $this->rdv['doctor_id'],
+            'patient_phone'         => $this->rdv['patient_phone'],
+            'patient_name'          => $this->rdv['patient_name'],
+            'patient_profil_pic'    => $this->rdv['patient_profil_pic'],
+            'rdv_request_subject'   => $this->rdv['rdv_request_subject'],
+            'rdv_request_content'   => $this->rdv['rdv_request_content'],
+            'rdv_request_date'      => $this->rdv['rdv_request_date'],
+            'rdv_time'              => $this->rdv['rdv_time'],
+            'rdv_status'            => $this->rdv['rdv_status'],
         ];
     }
+
 
     /**
      * Get the array representation of the notification.

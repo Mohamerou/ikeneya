@@ -80,4 +80,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Subscription::class);
     }
+
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role');
+    }
+
+
+    public function hasRole($role){
+        if ($this->roles()->where('name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+
 }
