@@ -57,15 +57,19 @@ class DoctorController extends Controller
         {
             // $pdfUrl = "";
             return response()->json([
+
                 'status' => 'success',
                 'medical_card_pdf' => $medicalCard->medical_card_pdf,
+                
             ], 200);
         }
 
         return response()->json([
+
             'error' => 'Aucune correspondance trouvée!',
             'medical_card_pdf' => "",
             'message' => 'Aucune correspondance trouvée!'
+
         ],403);
 
     }
