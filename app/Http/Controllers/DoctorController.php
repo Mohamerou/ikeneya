@@ -60,7 +60,7 @@ class DoctorController extends Controller
 
                 'status' => 'success',
                 'medical_card_pdf' => $medicalCard->medical_card_pdf,
-                
+
             ], 200);
         }
 
