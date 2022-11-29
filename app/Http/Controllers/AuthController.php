@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -129,7 +129,7 @@ class AuthController extends Controller
         // ]);
 
 
-
+        Log::info($request->all());
         if(Auth::attempt(['phone' => $validated_data['phone'], 'password' => $validated_data['password']]))
         {
 
@@ -147,12 +147,13 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('secret')->plainTextToken;
 
-
+            Log::info($user);
             // dd($token);
             // $cookie = cookie('jwt', $token, 60*24);
             // return response(["message" => "Success"])->withCookie($cookie);
 
-            if (!is_null($user->hasRole('user'))) {
+
+            if (Gate::allows('user')) {
                 return response()->json([
                     "status" => "success",
                     "type" => "patient",
@@ -162,7 +163,8 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if(!is_null($user->hasRole('doctor')))
+
+            if(Gate::allows('doctor'))
             {
                 return response()->json([
                     "status" => "success",
@@ -173,7 +175,7 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if(!is_null($user->hasRole('admin')))
+            if(Gate::allows('admin'))
             {
                 return response()->json([
                     "status" => "success",
@@ -184,7 +186,7 @@ class AuthController extends Controller
                 ], 200);
             }
 
-           
+
 
             // return response()->json([
             //     "status" => "success",
