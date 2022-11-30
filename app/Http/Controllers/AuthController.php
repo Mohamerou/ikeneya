@@ -153,7 +153,7 @@ class AuthController extends Controller
             // return response(["message" => "Success"])->withCookie($cookie);
 
 
-            if (Gate::allows('user')) {
+            if (Gate::allows('patient')) {
                 return response()->json([
                     "status" => "success",
                     "type" => "patient",
