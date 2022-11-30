@@ -23,6 +23,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-profile', [App\Http\Controllers\UserController::class, 'profile']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
+
+
+
+
+
+        
+    // Doctor related routes
+    Route::post('medical-card-pdf', [App\Http\Controllers\DoctorController::class, 'readPdf']);
+    Route::get('doctors', [App\Http\Controllers\DoctorController::class, 'index']);
+    Route::get('doctor-show/{id}', [App\Http\Controllers\DoctorController::class, 'show']);
+    Route::post('doctor-create', [App\Http\Controllers\DoctorController::class, 'store']);
+    Route::put('doctor-update/{id}', [App\Http\Controllers\DoctorController::class, 'update']);
+    Route::delete('doctor-delete/{id}', [App\Http\Controllers\DoctorController::class, 'destroy']);
 });
 
 Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
@@ -41,13 +54,6 @@ Route::delete('user-delete/{id}', [App\Http\Controllers\UserController::class, '
 Route::post('check-for-notifications/', [App\Http\Controllers\NotificationController::class, 'CheckNotification'])->name('notification.check');
 Route::post('rdv-request/', [App\Http\Controllers\RdvController::class, 'handleRdvRequest'])->name('rdv.request');
 
-// Doctor related routes
-Route::post('medical-card-pdf', [App\Http\Controllers\DoctorController::class, 'readPdf']);
-Route::get('doctors', [App\Http\Controllers\DoctorController::class, 'index']);
-Route::get('doctor-show/{id}', [App\Http\Controllers\DoctorController::class, 'show']);
-Route::post('doctor-create', [App\Http\Controllers\DoctorController::class, 'store']);
-Route::put('doctor-update/{id}', [App\Http\Controllers\DoctorController::class, 'update']);
-Route::delete('doctor-delete/{id}', [App\Http\Controllers\DoctorController::class, 'destroy']);
 
 // Patient related routes
 Route::get('patients', [App\Http\Controllers\PatientController::class, 'index']);

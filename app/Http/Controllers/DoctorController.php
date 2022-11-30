@@ -28,7 +28,26 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        return view("admin.doctor.index");
+        // $users = User::all();
+        // $doctors = [];
+        // foreach ($users as $user) {
+        //     if($user->doctor != null)
+        //     {
+        //         $doctors[] = $user;
+        //     }
+        // }
+        // return response()->json([
+        //     'status'    => 'success',
+        //     'doctors'  => $doctors
+        // ]);
+
+
+        return response([
+            'doctors' => Doctor::orderBy('created_at', 'desc')->with('user:id,first_name, last_name, email, phone')
+            ->get()
+        ], 200);
+
+
     }
 
     /**
@@ -46,7 +65,7 @@ class DoctorController extends Controller
     public function readPdf(Request $request)
     {
 
-        Log::info($request->all());
+        // Log::info($request->all());
         $validated_data = request()->validate([
             'unique_token' => 'required|string',
         ]);
