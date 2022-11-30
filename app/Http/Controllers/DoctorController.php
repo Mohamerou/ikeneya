@@ -41,7 +41,7 @@ class DoctorController extends Controller
         //     'doctors'  => $doctors
         // ]);
 
-
+        Log::info("reached doctors api end-point");
         return response([
             'doctors' => Doctor::orderBy('created_at', 'desc')->with('user:id,first_name,last_name,email,phone')
             ->get()
