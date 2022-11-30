@@ -43,7 +43,7 @@ class DoctorController extends Controller
 
 
         return response([
-            'doctors' => Doctor::orderBy('created_at', 'desc')->with('user:id,first_name, last_name, email, phone')
+            'doctors' => Doctor::orderBy('created_at', 'desc')->with('user:id,first_name,last_name,email,phone')
             ->get()
         ], 200);
 

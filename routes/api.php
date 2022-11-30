@@ -24,10 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 
-
-
-
-
         
     // Doctor related routes
     Route::post('medical-card-pdf', [App\Http\Controllers\DoctorController::class, 'readPdf']);
@@ -36,8 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('doctor-create', [App\Http\Controllers\DoctorController::class, 'store']);
     Route::put('doctor-update/{id}', [App\Http\Controllers\DoctorController::class, 'update']);
     Route::delete('doctor-delete/{id}', [App\Http\Controllers\DoctorController::class, 'destroy']);
+
 });
 
+
+    
 Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
 
 
