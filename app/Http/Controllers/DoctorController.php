@@ -65,7 +65,7 @@ class DoctorController extends Controller
     public function readPdf(Request $request)
     {
 
-        // Log::info($request->all());
+        Log::info($request->all());
         $validated_data = request()->validate([
             'unique_token' => 'required|string',
         ]);
