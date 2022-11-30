@@ -70,7 +70,10 @@ class DoctorController extends Controller
             'unique_token' => 'required|string',
         ]);
 
+        Log::info($validated_data);
+        
         $medicalCard = MedicalCard::where('unique_token', $validated_data['unique_token'])->first();
+        Log::info($medicalCard);
 
         if(!empty($medicalCard))
         {
