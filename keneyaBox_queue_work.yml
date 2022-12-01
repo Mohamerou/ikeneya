@@ -1,0 +1,11 @@
+apps:
+  - name: keneyaBoxApi
+    script: artisan
+    exec_mode: fork
+    interpreter: php
+    instances: 3
+    args:
+      - queue:work
+      - --timeout=0
+      - --sleep=1
+      - --tries=1
