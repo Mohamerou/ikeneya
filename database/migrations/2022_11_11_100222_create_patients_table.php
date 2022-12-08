@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('medical_card_id')->nullable()->constrained('medical_cards');
+            $table->foreignId('user_id')->constrained('users')->onDelete("cascade");
+            $table->foreignId('medical_card_id')->nullable()->constrained('medical_cards')->onDelete("cascade");
             $table->string('patient_code');
             $table->string('profil_pic');
             $table->string('id_card');
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
-
     }
 
     /**

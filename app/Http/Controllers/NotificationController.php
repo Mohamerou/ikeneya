@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Rdv;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Notifications\RdvRequest;
 
 class NotificationController extends Controller
@@ -81,23 +84,60 @@ class NotificationController extends Controller
 
     public function CheckNotification(Request $request)
     {
+
+        Log::info("hi notif");
+
         $data = $request->validate([
             "user_id" => 'required|numeric',
         ]);
 
+        $user_notifications = [];
         $user = User::find($data['user_id']);
 
-        $notifications = $user->unReadNotifications();
-        if(count($notifications) > 0)
-        {
-            return response()->json([
-                'notifications' => true,
-            ], 200);
-        } else {
 
-            return response()->json([
-                'notifications' => false,
-            ], 201);
-        }
+        Log::info($user);
+
+            $notifications = $user->unReadNotifications;
+
+
+            if(!is_null($notifications))
+            {
+                Log::info($notifications);
+
+                if($user->hasRole('user'))
+                {
+                    foreach ($notifications as $notification) {
+                        Log::info("patient");
+                        $user_notifications[] = [
+                            'title' => $notification->data['rdv_response_subject'],
+                            'body' => $notification->data['rdv_response_content'],
+                        ];
+                    }
+                }
+
+                if ($user->hasRole('doctor'))
+                {
+                    foreach ($notifications as $notification) {
+                        Log::info("doc");
+
+                        // print_r($notification);
+
+                        $user_notifications[] = [
+                            'title' => $notification->data['rdv_request_subject'],
+                            'body' => $notification->data['rdv_request_content'],
+                        ];
+                    }
+                }
+
+                return response()->json([
+                    'notifications' => $user_notifications,
+                ], 200);
+            } else {
+
+                return response()->json([
+                    'notifications' => "none",
+                ], 201);
+            }
+
     }
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('rdv_response_subject')->nullable();
             $table->string('rdv_response_content')->nullable();
             $table->dateTime('rdv_response_date')->nullable();
+            $table->dateTime('rdv_request_date')->nullable();
             $table->dateTime('rdv_time')->nullable();
             $table->string('rdv_response_status')->default('reply');
             $table->timestamps();

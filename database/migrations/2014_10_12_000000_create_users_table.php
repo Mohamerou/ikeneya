@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('address');
             $table->string('password');
+            $table->boolean('is_verified');
+            $table->boolean('disabled')->default(false);
+            $table->string('firebaseUID')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

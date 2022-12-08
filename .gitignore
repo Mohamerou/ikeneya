@@ -5,6 +5,7 @@
 /storage/*.key
 /vendor
 .env
+keneyaBox_queue_work.yml
 .env.backup
 .phpunit.result.cache
 Homestead.json

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('medical_cards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete("cascade");
             $table->string('urgency_contact1_full_name')->nullable();
             $table->string('urgency_contact1_address')->nullable();
             $table->string('urgency_contact1_phone')->nullable();
