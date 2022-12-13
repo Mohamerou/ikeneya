@@ -37,8 +37,8 @@ class RdvController extends Controller
         $patient = User::find($validatedData['patient_id']);
 
         // print_r($patient);
-        // Log::info("patient:");
-        // Log::info($patient);
+        Log::info("patient:");
+        Log::info($patient);
         // Log::info($request->all());
 
 
@@ -143,7 +143,7 @@ class RdvController extends Controller
             foreach($doctor->unReadNotifications as $notification)
             {
 
-        Log::info($request->all());
+        // Log::info($request->all());
                 if($notification->id === $validatedData['notification_id'])
                 {
                     // dd($notification);
