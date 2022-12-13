@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 
-        
+
     // Doctor related routes
     Route::post('medical-card-pdf', [App\Http\Controllers\DoctorController::class, 'readPdf']);
     Route::get('doctors', [App\Http\Controllers\DoctorController::class, 'index']);
@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-    
+
 Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
 
 
@@ -49,9 +49,15 @@ Route::get('user-show/{id}', [App\Http\Controllers\UserController::class, 'show'
 Route::post('user-create', [App\Http\Controllers\AuthController::class, 'register']);
 Route::put('user-update/{id}', [App\Http\Controllers\UserController::class, 'update']);
 Route::delete('user-delete/{id}', [App\Http\Controllers\UserController::class, 'destroy']);
-// User notify doctor
-Route::post('check-for-notifications/', [App\Http\Controllers\NotificationController::class, 'CheckNotification'])->name('notification.check');
+
+    // User notify doctor
+Route::post('check-for-notifications', [App\Http\Controllers\NotificationController::class, 'CheckNotification'])->name('notification.check');
+Route::post('get-user-notifications', [App\Http\Controllers\NotificationController::class, 'getUserNotifications'])->name('notification.all');
+Route::post('mark-as-read', [App\Http\Controllers\NotificationController::class, 'markNotifAsread'])->name('notification.read');
+
+
 Route::post('rdv-request/', [App\Http\Controllers\RdvController::class, 'handleRdvRequest'])->name('rdv.request');
+Route::post('rdv-response/', [App\Http\Controllers\RdvController::class, 'handleRdvResponse'])->name('rdv.response');
 
 
 // Patient related routes

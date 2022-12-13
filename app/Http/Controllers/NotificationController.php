@@ -140,4 +140,141 @@ class NotificationController extends Controller
             }
 
     }
+
+
+    public function getUserNotifications(Request $request)
+    {
+
+        Log::info("All notif");
+
+        $data = $request->validate([
+            "user_id" => 'required|numeric',
+        ]);
+
+        $user_notifications = [];
+        $user = User::find($data['user_id']);
+
+
+        Log::info($user);
+
+            $notifications = $user->notifications;
+
+
+            if(!is_null($notifications))
+            {
+                Log::info($notifications);
+
+                if($user->hasRole('user'))
+                {
+                    foreach ($notifications as $notification) {
+                        Log::info("patient");
+
+
+
+                        if ($notification->read_at == null) {
+                            $read_at = "";
+                        } else {
+                            $read_at = $notification->read_at;
+                        }
+
+                        $user_notifications[] = [
+                            'id' => $notification->id,
+                            'doctor_id' => $notification->data['doctor_id'],
+                            'patient_id' => $notification->data['patient_id'],
+                            'title' => $notification->data['rdv_response_subject'],
+                            'body' => $notification->data['rdv_response_content'],
+                            'type' => 'response',
+                            'date' => date('d-m-Y', strtotime($notification->data['rdv_response_date'])),
+                            'rdv_time' => date('H:i:s', strtotime($notification->data['rdv_time'])),
+                            'profil_pic' => $user->patient->profil_pic,
+                            'read_at' => $read_at,
+                        ];
+
+                    }
+                }
+
+                if ($user->hasRole('doctor'))
+                {
+                    foreach ($notifications as $notification) {
+                        Log::info("doc");
+
+                        // print_r($notification);
+
+                        if ($notification->read_at == null) {
+                            $read_at = "";
+                        } else {
+                            $read_at = $notification->read_at;
+                        }
+
+                        $user_notifications[] = [
+                            'id' => $notification->id,
+                            'doctor_id' => $notification->data['doctor_id'],
+                            'patient_id' => $notification->data['patient_id'],
+                            'title' => $notification->data['rdv_request_subject'],
+                            'body' => $notification->data['rdv_request_content'],
+                            'type' => "request",
+                            'date' => date('d-m-Y', strtotime($notification->data['rdv_request_date'])),
+                            'rdv_time' => date('H:i:s', strtotime($notification->data['rdv_time'])),
+                            'rdv_status' => $notification->data['rdv_status'],
+                            'profil_pic' => $user->doctor->profil_pic,
+                            'read_at' => $read_at,
+                        ];
+                    }
+                }
+
+                Log::info($user_notifications);
+
+                return response()->json([
+                    // header('Content-Type: application/json'),
+                    'notifications' => $user_notifications,
+                ], 200);
+            } else {
+
+                return response()->json([
+                    // header('Content-Type: application/json'),
+                    'notifications' => "none",
+                ], 201);
+            }
+
+    }
+
+
+    public function markNotifAsread(Request $request)
+    {
+
+        Log::info("Mark as read!");
+
+        $data = $request->validate([
+            "user_id" => 'required|numeric',
+            "notification_id" => 'required|string',
+        ]);
+        Log::info($data);
+
+        $user_notifications = [];
+        $user = User::find($data['user_id']);
+
+
+        Log::info($user);
+
+            $notifications = $user->unReadNotifications;
+
+
+            if(!is_null($notifications))
+            {
+                Log::info($notifications);
+                    foreach ($notifications as $notification) {
+
+                        if ($notification->id == $data['notification_id']){
+                            Log::info("marked as read!");
+
+                            $notification->markAsRead();
+                        }
+                    }
+            }
+
+            return response()->json([
+                // header('Content-Type: application/json'),
+                'status' => 'success',
+            ], 200);
+        }
 }
