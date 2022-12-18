@@ -158,7 +158,6 @@ class AuthController extends Controller
                     "status" => "success",
                     "type" => "patient",
                     "user" => $user,
-                    "profil_pic" => $user->profil_pic,
                     "token" => $token,
                 ], 200);
             }
@@ -170,7 +169,6 @@ class AuthController extends Controller
                     "status" => "success",
                     "type" => "doctor",
                     "user" => $user,
-                    "profil_pic" => $user->profil_pic,
                     "token" => $token,
                 ], 200);
             }
@@ -181,7 +179,6 @@ class AuthController extends Controller
                     "status" => "success",
                     "type" => "admin",
                     "user" => $user,
-                    "profil_pic" => "",
                     "token" => $token,
                 ], 200);
             }

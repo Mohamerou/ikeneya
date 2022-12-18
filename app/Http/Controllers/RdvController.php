@@ -51,7 +51,7 @@ class RdvController extends Controller
             $rdv->doctor_id             = $validatedData['doctor_id'];
             $rdv->patient_phone         = $patient->phone;
             $rdv->patient_name          = $patient->first_name." ".$patient->last_name;
-            $rdv->patient_profil_pic    = $patient->patient->profil_pic;
+            $rdv->patient_profil_pic    = $patient->profil_pic;
             $rdv->rdv_request_subject   = $validatedData['rdv_request_subject'];
             $rdv->rdv_request_content   = $validatedData['rdv_request_content'];
             $rdv->rdv_request_date      = Carbon::parse($validatedData['rdv_request_date']);
@@ -163,7 +163,7 @@ class RdvController extends Controller
                     $rdv_response->doctor_id             = $notification->data['doctor_id'];
                     $rdv_response->doctor_phone          = $doctor->phone;
                     $rdv_response->doctor_name           = $doctor->first_name." ".$doctor->last_name;
-                    $rdv_response->doctor_profil_pic     = $doctor->doctor->profil_pic;
+                    $rdv_response->doctor_profil_pic     = $doctor->profil_pic;
                     $rdv_response->rdv_response_subject   = $notification->data['rdv_request_subject'];
                     $rdv_response->rdv_response_content   = $notification->data['rdv_request_content'];
                     $rdv_response->rdv_response_date      = Carbon::parse($notification->data['rdv_request_date']);
