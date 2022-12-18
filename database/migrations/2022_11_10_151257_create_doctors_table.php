@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('hospital');
             $table->string('id_card')->nullable();
             $table->string('doctor_card')->nullable();
-            $table->string('profil_pic')->nullable();
             $table->foreignId('added_by_user_id')->constrained('users');
             $table->boolean('status')->default(true);
             $table->timestamps();
