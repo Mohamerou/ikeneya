@@ -154,12 +154,23 @@ class AuthController extends Controller
 
 
             if (Gate::allows('patient')) {
-                return response()->json([
+                $medical_card = MedicalCard::where('user_id', $user->id)->first();
+                if (!empty($medical_card)) {     
+                    return response()->json([
                     "status" => "success",
                     "type" => "patient",
                     "user" => $user,
+                    "medical_card" => $medical_card->medical_card_pdf,
                     "token" => $token,
                 ], 200);
+                } else {
+                    return response()->json([
+                        "status" => "success",
+                        "type" => "patient",
+                        "user" => $user,
+                        "token" => $token,
+                    ], 200);
+                }
             }
 
 
