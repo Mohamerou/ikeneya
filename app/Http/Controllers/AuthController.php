@@ -160,7 +160,7 @@ class AuthController extends Controller
                     "status" => "success",
                     "type" => "patient",
                     "user" => $user,
-                    "medical_card" => $medical_card->medical_card_pdf,
+                    "medical_card_pdf" => $medical_card->medical_card_pdf,
                     "token" => $token,
                 ], 200);
                 } else {
