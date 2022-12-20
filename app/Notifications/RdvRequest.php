@@ -56,6 +56,7 @@ class RdvRequest extends Notification
             'doctor_id'             => $this->rdv['doctor_id'],
             'patient_phone'         => $this->rdv['patient_phone'],
             'patient_name'          => $this->rdv['patient_name'],
+            'doctor_name'           => $this->rdv['doctor_name'],
             'patient_profil_pic'    => $this->rdv['patient_profil_pic'],
             'rdv_request_subject'   => $this->rdv['rdv_request_subject'],
             'rdv_request_content'   => $this->rdv['rdv_request_content'],

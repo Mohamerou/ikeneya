@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained('users');
             $table->string('patient_phone');
             $table->string('patient_name');
+            $table->string('doctor_name');
             $table->string('patient_profil_pic');
             $table->string('rdv_request_subject');
             $table->string('rdv_request_content');

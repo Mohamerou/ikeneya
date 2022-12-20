@@ -34,7 +34,8 @@ class NotificationController extends Controller
 
             if(!is_null($notifications))
             {
-                // Log::info($notifications);
+                Log::info("user notifications");
+                Log::info($notifications);
 
                 if($user->hasRole('user'))
                 {
@@ -44,6 +45,8 @@ class NotificationController extends Controller
                             'title' => $notification->data['rdv_response_subject'],
                             'body' => $notification->data['rdv_response_content'],
                         ];
+
+                        Log::info($user_notifications);
                     }
                 }
 
@@ -101,7 +104,8 @@ class NotificationController extends Controller
                     foreach ($notifications as $notification) {
                         // Log::info("patient");
 
-
+                        $doctor = User::find($notification->data['doctor_id']);
+                        $patient = User::find($notification->data['patient_id']);
 
                         if ($notification->read_at == null) {
                             $read_at = "";
@@ -109,10 +113,17 @@ class NotificationController extends Controller
                             $read_at = $notification->read_at;
                         }
 
+
+
+
+
+
                         $user_notifications[] = [
                             'id' => $notification->id,
                             'doctor_id' => $notification->data['doctor_id'],
                             'patient_id' => $notification->data['patient_id'],
+                            "doctor_name"           => $doctor->first_name." ".$doctor->last_name,
+                            "patient_name"          => $patient->first_name." ".$patient->last_name,
                             'title' => $notification->data['rdv_response_subject'],
                             'body' => $notification->data['rdv_response_content'],
                             'type' => 'response',
@@ -141,6 +152,8 @@ class NotificationController extends Controller
                         $user_notifications[] = [
                             'id' => $notification->id,
                             'doctor_id' => $notification->data['doctor_id'],
+                            'doctor_name' => $notification->data['doctor_name'],
+                            'patient_name' => $notification->data['patient_name'],
                             'patient_id' => $notification->data['patient_id'],
                             'title' => $notification->data['rdv_request_subject'],
                             'body' => $notification->data['rdv_request_content'],

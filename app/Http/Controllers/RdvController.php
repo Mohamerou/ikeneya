@@ -35,10 +35,11 @@ class RdvController extends Controller
 
 
         $patient = User::find($validatedData['patient_id']);
+        $doctor  = User::find($validatedData['doctor_id']);
 
         // print_r($patient);
         Log::info("patient:");
-        Log::info($patient);
+        // Log::info($patient);
         // Log::info($request->all());
 
 
@@ -50,6 +51,7 @@ class RdvController extends Controller
             $rdv->patient_id            = $validatedData['patient_id'];
             $rdv->doctor_id             = $validatedData['doctor_id'];
             $rdv->patient_phone         = $patient->phone;
+            $rdv->doctor_name           = $doctor->first_name." ".$doctor->last_name;
             $rdv->patient_name          = $patient->first_name." ".$patient->last_name;
             $rdv->patient_profil_pic    = $patient->profil_pic;
             $rdv->rdv_request_subject   = $validatedData['rdv_request_subject'];
@@ -61,7 +63,7 @@ class RdvController extends Controller
         }
         else {
             return response()->json([
-                "message" => "patient found.",
+                "message" => "patient account not found.",
                 "status" => "error"
             ], 404);
         }
@@ -124,6 +126,8 @@ class RdvController extends Controller
         if(!is_null($request->has('notification_id')) && !is_null($request->has('validated')) && isset($request->validated))
         {
 
+            Log::info("Reached rdv response end point !");
+            // dd("Hi");
             $validatedData =    request()->validate([
                 'notification_id'       => 'required|string',
                 'patient_id'            => 'required|string',
@@ -136,7 +140,8 @@ class RdvController extends Controller
                 'validated'             => 'required|string',
             ]);
 
-
+            
+            Log::info("Validated data !");
 
             // dd($request->all());
             $doctor = User::find($validatedData['doctor_id']);
@@ -156,6 +161,8 @@ class RdvController extends Controller
                     // $doctor  = User::find($notification->data['doctor_id']);
 
 
+
+
                     $rdv_response = new ModelsRdvResponse;
 
 
@@ -163,6 +170,7 @@ class RdvController extends Controller
                     $rdv_response->doctor_id             = $notification->data['doctor_id'];
                     $rdv_response->doctor_phone          = $doctor->phone;
                     $rdv_response->doctor_name           = $doctor->first_name." ".$doctor->last_name;
+                    $rdv_response->patient_name          = $patient->first_name." ".$patient->last_name;
                     $rdv_response->doctor_profil_pic     = $doctor->profil_pic;
                     $rdv_response->rdv_response_subject   = $notification->data['rdv_request_subject'];
                     $rdv_response->rdv_response_content   = $notification->data['rdv_request_content'];
@@ -175,7 +183,7 @@ class RdvController extends Controller
 
                     $patient->notify(new RdvResponseNotification($rdv_response));
 
-                    Log::info($patient);
+                    Log::info("HI");
 
                     return response()->json([
                         'message' => "Rendez-vous validé avec succès!",
