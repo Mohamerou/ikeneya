@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Patient;
 use App\Models\Doctor;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Contracts\Support\ValidatedData;
 
 class RdvController extends Controller
 {
@@ -162,7 +164,7 @@ class RdvController extends Controller
 
 
 
-
+                    $rdv_status = 
                     $rdv_response = new ModelsRdvResponse;
 
 
@@ -176,7 +178,7 @@ class RdvController extends Controller
                     $rdv_response->rdv_response_content   = $notification->data['rdv_request_content'];
                     $rdv_response->rdv_response_date      = Carbon::parse($notification->data['rdv_request_date']);
                     $rdv_response->rdv_time               = Carbon::parse($notification->data['rdv_time']);
-                    $rdv_response->rdv_response_status    = "validated";
+                    $rdv_response->rdv_response_status    = $validatedData['validated'];
 
                     $rdv_response->save();
 
