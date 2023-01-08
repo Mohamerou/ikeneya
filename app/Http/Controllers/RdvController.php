@@ -124,7 +124,7 @@ class RdvController extends Controller
 
 
 
-        // Doctor reply / Doctor validation as per validated value
+        // Doctor reply / Doctor validation : indicated by the value within the $validated variable
         if(!is_null($request->has('notification_id')) && !is_null($request->has('validated')) && isset($request->validated))
         {
 
@@ -147,57 +147,65 @@ class RdvController extends Controller
 
             // dd($request->all());
             $doctor = User::find($validatedData['doctor_id']);
-            foreach($doctor->unReadNotifications as $notification)
-            {
 
-        // Log::info($request->all());
-                if($notification->id === $validatedData['notification_id'])
+            if(!empty($doctor)){
+                foreach($doctor->unReadNotifications as $notification)
                 {
-                    // dd($notification);
-                    $notification->markAsRead();
-                    // $notification->data['rdv_status'] = "validated";
-
-                    // $dbNotification = ModelsRdvResponse::where();
-
-                    $patient = User::find($notification->data['patient_id']);
-                    // $doctor  = User::find($notification->data['doctor_id']);
-
-
-
-                    $rdv_status = 
-                    $rdv_response = new ModelsRdvResponse;
-
-
-                    $rdv_response->patient_id            = $notification->data['patient_id'];
-                    $rdv_response->doctor_id             = $notification->data['doctor_id'];
-                    $rdv_response->doctor_phone          = $doctor->phone;
-                    $rdv_response->doctor_name           = $doctor->first_name." ".$doctor->last_name;
-                    $rdv_response->patient_name          = $patient->first_name." ".$patient->last_name;
-                    $rdv_response->doctor_profil_pic     = $doctor->profil_pic;
-                    $rdv_response->rdv_response_subject   = $notification->data['rdv_request_subject'];
-                    $rdv_response->rdv_response_content   = $notification->data['rdv_request_content'];
-                    $rdv_response->rdv_response_date      = Carbon::parse($notification->data['rdv_request_date']);
-                    $rdv_response->rdv_time               = Carbon::parse($notification->data['rdv_time']);
-                    $rdv_response->rdv_response_status    = $validatedData['validated'];
-
-                    $rdv_response->save();
-
-
-                    $patient->notify(new RdvResponseNotification($rdv_response));
-
-                    Log::info("HI");
-
-                    return response()->json([
-                        'message' => "Rendez-vous validé avec succès!",
-                        'status'  => 'success'
-                    ], 200);
-                } else {
-
-                    return response()->json([
-                        'error' => "Une erreur s'est produite, réessayer!",
-                        'status'  => 'error'
-                    ], 200);
+    
+            // Log::info($request->all());
+                    if($notification->id === $validatedData['notification_id'])
+                    {
+                        // dd($notification);
+                        $notification->markAsRead();
+                        // $notification->data['rdv_status'] = "validated";
+    
+                        // $dbNotification = ModelsRdvResponse::where();
+    
+                        $patient = User::find($notification->data['patient_id']);
+                        // $doctor  = User::find($notification->data['doctor_id']);
+    
+    
+    
+                        $rdv_status = 
+                        $rdv_response = new ModelsRdvResponse;
+    
+    
+                        $rdv_response->patient_id            = $notification->data['patient_id'];
+                        $rdv_response->doctor_id             = $notification->data['doctor_id'];
+                        $rdv_response->doctor_phone          = $doctor->phone;
+                        $rdv_response->doctor_name           = $doctor->first_name." ".$doctor->last_name;
+                        $rdv_response->patient_name          = $patient->first_name." ".$patient->last_name;
+                        $rdv_response->doctor_profil_pic     = $doctor->profil_pic;
+                        $rdv_response->rdv_response_subject   = $notification->data['rdv_request_subject'];
+                        $rdv_response->rdv_response_content   = $notification->data['rdv_request_content'];
+                        $rdv_response->rdv_response_date      = Carbon::parse($notification->data['rdv_request_date']);
+                        $rdv_response->rdv_time               = Carbon::parse($notification->data['rdv_time']);
+                        $rdv_response->rdv_response_status    = $validatedData['validated'];
+    
+                        $rdv_response->save();
+    
+    
+                        $patient->notify(new RdvResponseNotification($rdv_response));
+    
+                        Log::info("Notification validation response sent !!!");
+    
+                        return response()->json([
+                            'message' => "Rendez-vous validé avec succès!",
+                            'status'  => 'success'
+                        ], 200);
+                    } else {
+    
+                        return response()->json([
+                            'error' => "Aucune correspondance !",
+                            'status'  => 'error'
+                        ], 403);
+                    }
                 }
+    
+                return response()->json([
+                    'error' => "Compte inexistant!",
+                    'status'  => 'error'
+                ], 403);
             }
         }
 

@@ -164,6 +164,9 @@ class NotificationController extends Controller
                             'profil_pic' => $user->profil_pic,
                             'read_at' => $read_at,
                         ];
+
+                        // Log::info(print("Log::info(user_notifications)"));
+                        Log::info($user_notifications);
                     }
                 }
 
