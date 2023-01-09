@@ -101,6 +101,8 @@ class RdvController extends Controller
     {
 
         // Patient reply / Validated the rdv as per checked value
+        Log::info($request->all());
+
         if(!is_null($request->has('notification_id')) && !is_null($request->has('checked')) && isset($request->checked))
         {
 
@@ -139,7 +141,6 @@ class RdvController extends Controller
                 'rdv_response_content'  => 'required|string',
                 'rdv_response_date'     => 'required|string',
                 'rdv_time'              => 'required|string',
-                'notification_id'       => 'required|string',
                 'validated'             => 'required|string',
             ]);
 
@@ -189,6 +190,8 @@ class RdvController extends Controller
                         $patient->notify(new RdvResponseNotification($rdv_response));
     
                         Log::info("Notification validation response sent !!!");
+                        Log::info("Doc's reply");
+                        Log::info($rdv_response);
     
                         return response()->json([
                             'message' => "Rendez-vous validé avec succès!",
