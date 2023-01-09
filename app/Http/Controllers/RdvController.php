@@ -41,7 +41,8 @@ class RdvController extends Controller
 
         // print_r($patient);
         Log::info("patient:");
-        // Log::info($patient);
+        Log::info($patient);
+        Log::info($doctor);
         // Log::info($request->all());
 
 
