@@ -34,7 +34,7 @@ class NotificationController extends Controller
 
             if(!is_null($notifications))
             {
-                Log::info("user notifications");
+                Log::info("user unReadNotifications");
                 Log::info($notifications);
 
                 if($user->hasRole('user'))
@@ -112,11 +112,6 @@ class NotificationController extends Controller
                         } else {
                             $read_at = $notification->read_at;
                         }
-
-
-
-
-
 
                         $user_notifications[] = [
                             'id' => $notification->id,

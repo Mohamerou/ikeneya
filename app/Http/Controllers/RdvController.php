@@ -158,7 +158,7 @@ class RdvController extends Controller
                     if($notification->id === $validatedData['notification_id'])
                     {
                         // dd($notification);
-                        $notification->markAsRead();
+                        // $notification->markAsRead();
                         // $notification->data['rdv_status'] = "validated";
     
                         // $dbNotification = ModelsRdvResponse::where();
