@@ -33,13 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('doctor-update/{id}', [App\Http\Controllers\DoctorController::class, 'update']);
     Route::delete('doctor-delete/{id}', [App\Http\Controllers\DoctorController::class, 'destroy']);
 
-});
-
-
-
-Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
-
-
 
 
 
@@ -80,4 +73,15 @@ Route::get('medical-data-show/{id}', [App\Http\Controllers\MedicalCardController
 Route::post('medical-data-create', [App\Http\Controllers\MedicalCardController::class, 'store']);
 Route::put('medical-data-update/{id}', [App\Http\Controllers\MedicalCardController::class, 'update']);
 Route::delete('medical-data-delete/{id}', [App\Http\Controllers\MedicalCardController::class, 'destroy']);
+
+});
+
+
+
+// Route::get('users', [App\Http\Controllers\UserController::class, 'index']);
+
+
+
+
+
 

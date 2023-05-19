@@ -62,7 +62,7 @@ class AuthController extends Controller
     // Login user
     public function login(Request $request){
         $validated_data = $request->validate([
-            'phone' => "required|digits:8",
+            'phone' => "required|string:8",
             'password' => "required|string|min:8"
         ]);
 
@@ -156,7 +156,7 @@ class AuthController extends Controller
 
             if (Gate::allows('patient')) {
                 $medical_card = MedicalCard::where('user_id', $user->id)->first();
-                if (!empty($medical_card)) {     
+                if (!empty($medical_card)) {
                     return response()->json([
                     "status" => "success",
                     "type" => "patient",

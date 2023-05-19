@@ -212,11 +212,16 @@ class NotificationController extends Controller
                             $notification->markAsRead();
                         }
                     }
+
+                return response()->json([
+                    // header('Content-Type: application/json'),
+                    'status' => 'success',
+                ], 200);
             }
 
             return response()->json([
                 // header('Content-Type: application/json'),
-                'status' => 'success',
-            ], 200);
+                'status' => 'error',
+            ], 404);
         }
 }

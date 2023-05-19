@@ -62,6 +62,7 @@ class RdvResponseNotification extends Notification
                 'doctor_profil_pic'         => $this->rdvResponse['doctor_profil_pic'],
                 'rdv_response_subject'      => $this->rdvResponse['rdv_response_subject'],
                 'rdv_response_content'      => $this->rdvResponse['rdv_response_content'],
+                'rdv_request_date'          => $this->rdvResponse['rdv_request_date'],
                 'rdv_response_date'         => $this->rdvResponse['rdv_response_date'],
                 'rdv_time'                  => $this->rdvResponse['rdv_time'],
                 'rdv_response_status'       => $this->rdvResponse['rdv_response_status'],

@@ -17,8 +17,7 @@ use Illuminate\Contracts\Support\ValidatedData;
 
 class RdvController extends Controller
 {
-    //
-
+    // Send new RDV request from Patient to Doc
     public function handleRdvRequest(Request $request)
     {
         // dd($request->all());
@@ -97,6 +96,7 @@ class RdvController extends Controller
     }
 
 
+    // Reply to an RDV request by Doc
     public function handleRdvResponse(Request $request)
     {
 
@@ -213,6 +213,19 @@ class RdvController extends Controller
             }
         }
 
+    }
+
+
+
+    // Postpone RDV request
+    public function PostponeRDV()
+    {
+
+        
+        $validatedData =    request()->validate([
+            'notification_id'   => 'required|string',
+            'checked'         => 'required|string',
+        ]);
     }
 
 
