@@ -185,15 +185,15 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if(Gate::allows('admin'))
-            {
-                return response()->json([
-                    "status" => "success",
-                    "type" => "admin",
-                    "user" => $user,
-                    "token" => $token,
-                ], 200);
-            }
+            // if(Gate::allows('admin'))
+            // {
+            //     return response()->json([
+            //         "status" => "success",
+            //         "type" => "admin",
+            //         "user" => $user,
+            //         "token" => $token,
+            //     ], 200);
+            // }
 
 
 
