@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('utilisateur/', [App\Http\Controllers\AuthController::class, 'user']);
 
 
+
     // Doctor related routes
     Route::post('medical-card-pdf', [App\Http\Controllers\DoctorController::class, 'readPdf']);
     Route::get('doctors', [App\Http\Controllers\DoctorController::class, 'index']);
