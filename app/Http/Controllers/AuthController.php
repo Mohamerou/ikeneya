@@ -148,6 +148,7 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('secret')->plainTextToken;
 
+
             Log::info($user);
             // dd($token);
             // $cookie = cookie('jwt', $token, 60*24);
@@ -162,6 +163,7 @@ class AuthController extends Controller
                     "type" => "patient",
                     "user" => $user,
                     "medical_card_pdf" => $medical_card->medical_card_pdf,
+                    "my_unique_medical_card_token" => $medical_card->unique_token,
                     "token" => $token,
                 ], 200);
                 } else {
