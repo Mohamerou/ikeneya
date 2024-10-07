@@ -17,31 +17,43 @@ class DoctorController extends Controller
 
 
 
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:sanctum');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        // $users = User::all();
-        // $doctors = [];
-        // foreach ($users as $user) {
-        //     if($user->doctor != null)
-        //     {
-        //         $doctors[] = $user;
-        //     }
-        // }
-        // return response()->json([
-        //     'status'    => 'success',
-        //     'doctors'  => $doctors
-        // ]);
+    {  
+        $user_array = array();
+        $users = User::all();
+        $doctors = Doctor::all();
+        $doctors_array = [];
 
-        Log::info("reached doctors api end-point");
+        foreach ($users as $user) {
+            if($user->doctor != null)
+            {
+                $doctors[] = $user;
+            }
+            // foreach ($doctors as $doctor) {
+            //     if($user->id == $doctor->user_id)
+            //     {
+            //         $doctors_array['doc_name'] = $user->firstname." ".$user->lastname;
+            //         $doctors_array['doc_profile'] = $doctor->id_card;
+            //     }
+            // }
+        }
+
+        // $user_array['user'] = Auth::user();
+        // $user_array['doctor'] = $doctors_array; 
+        // return response()->json([
+        //     $user_array
+        // ], 200);
+
+        // Log::info("reached doctors api end-point");
         return response([
             'doctors' => Doctor::orderBy('created_at', 'desc')->with('user:id,first_name,last_name,email,phone,profil_pic')
             ->get()

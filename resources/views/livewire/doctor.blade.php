@@ -176,23 +176,16 @@
                                   <select wire:model="type" class="form-select" aria-label="Default select example">
                                     <option value="" selected>Sélectionner le type</option>
                                     <option value="generalist">Généraliste</option>
-                                    <option value="specialist">Spécialiste</option>
+                                    <option value="cardiology">Cardiologue</option>
+                                    <option value="respiratory">Respiration</option>
+                                    <option value="dermatology">Dermatologue</option>
+                                    <option value="genicology">Genicologue</option>
+                                    <option value="dental">Dentiste</option>
                                   </select>
                                   @error('type') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                 </div>
                               </div>
 
-                              <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Domaine</label>
-                                <div class="col-sm-10">
-                                  <select wire:model="job_title" class="form-select" aria-label="Default select example">
-                                    <option value="" selected>Sélectionner le type</option>
-                                    <option value="Ophtalmologist">Ophtalmologiste</option>
-                                    <option value="Pediatre">Pédiatre</option>
-                                  </select>
-                                  @error('job_title') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
-                                </div>
-                              </div>
                               <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="doctor_card" class="col-sm-2 col-form-label">Carte médécin</label>
@@ -444,23 +437,17 @@
                                   <select wire:model="type" class="form-select" aria-label="Default select example">
                                     <option value="" selected>Sélectionner le type</option>
                                     <option value="generalist">Généraliste</option>
-                                    <option value="specialist">Spécialiste</option>
+                                    <option value="cardiology">Cardiologue</option>
+                                    <option value="respiratory">Respiration</option>
+                                    <option value="dermatology">Dermatologue</option>
+                                    <option value="genicology">Genicologue</option>
+                                    <option value="dental">Dentiste</option>
+                                  </select>
                                   </select>
                                   @error('type') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
                                 </div>
                               </div>
 
-                              <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Domaine</label>
-                                <div class="col-sm-10">
-                                  <select wire:model="job_title" class="form-select" aria-label="Default select example">
-                                    <option value="" selected>Sélectionner le type</option>
-                                    <option value="Ophtalmologist">Ophtalmologiste</option>
-                                    <option value="Pediatre">Pédiatre</option>
-                                  </select>
-                                  @error('job_title') <span class="text-danger">{{ $message="Champ obligatoire" }}</span> @enderror
-                                </div>
-                              </div>
                               <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="doctor_card" class="col-sm-2 col-form-label">Carte médécin</label>
@@ -607,9 +594,8 @@
                                         <td>{{ $user->email }}</td>
                                         <td><img width="100px" height="100px" src="{{ asset('storage/'.$user->doctor->profil_pic) }}" alt="Photo de profil"></td>
                                         <td><img width="100px" height="100px" src="{{ asset('storage/'.$user->doctor->doctor_card) }}" alt="carte médécin"></td>
-                                        <td>{{ $user->doctor->type }}</td>
                                         <td>{{ $user->doctor->hospital }}</td>
-                                        <td>{{ $user->doctor->job_title }}</td>
+                                        <td>{{ $user->doctor->category }}</td>
                                         <td>{{ $user->address }}</td>
                                         <td>
                                             <button type="button" data-bs-toggle="modal" data-bs-target="#updateDoctorModal" wire:click="editDoctor({{ $user->id }})" class="btn btn-primary">Modifier</button>

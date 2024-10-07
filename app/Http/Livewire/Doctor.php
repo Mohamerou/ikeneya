@@ -38,7 +38,7 @@ class Doctor extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $first_name, $last_name, $phone, $email, $address, $type, $job_title, $id_card, $profil_pic, $doctor_card, $gender, $doctor_id, $hospital, $doctor_users;
+    public $first_name, $last_name, $phone, $email, $address, $category, $id_card, $profil_pic, $doctor_card, $gender, $doctor_id, $hospital, $doctor_users;
     public $old_id_card_frame = null;
     public $old_profil_pic_frame = null;
     public $old_doctor_card_frame = null;
@@ -52,8 +52,7 @@ class Doctor extends Component
             'last_name' =>  "required|string",
             'address' =>  "required|string",
             'hospital' =>  "required|string",
-            'type' =>  "required|string",
-            'job_title' =>  "required|string",
+            'category' =>  "required|string",
             'gender' =>  "required|string|min:1|max:1",
             'email' =>  "required|email",
             'phone' =>  "required|digits:8",
@@ -165,8 +164,7 @@ class Doctor extends Component
 
             $doctor_info = ModelsDoctor::create([
                 "user_id" => $doctor_user->id,
-                "type" => $validatedData['type'],
-                'job_title' => $validatedData['job_title'],
+                'category' => $validatedData['category'],
                 'code' => $code,
                 'gender' => $validatedData['gender'],
                 'hospital' => $validatedData['hospital'],
@@ -193,8 +191,7 @@ class Doctor extends Component
         ]);
 
         $updated_doctor_user_info = ModelsDoctor::where('user_id', $this->doctor_id)->update([
-            "type" => $validatedData['type'],
-            "job_title" => $validatedData['job_title'],
+            "category" => $validatedData['category'],
             "gender" => $validatedData['gender'],
             "hospital" => $validatedData['hospital'],
         ]);
@@ -244,11 +241,10 @@ class Doctor extends Component
             $this->doctor_id = $doctor->id;
             $this->first_name = $doctor->first_name;
             $this->last_name = $doctor->last_name;
-            $this->type = $doctor->doctor->type;
             $this->address = $doctor->address;
             $this->phone = $doctor->phone;
             $this->email = $doctor->email;
-            $this->job_title = $doctor->doctor->job_title;
+            $this->category = $doctor->doctor->category;
             $this->gender = $doctor->doctor->gender;
             $this->hospital = $doctor->doctor->hospital;
 
@@ -298,9 +294,8 @@ class Doctor extends Component
         $this->address = "";
         $this->email = "";
         $this->gender = "";
-        $this->type = "";
         $this->hospital = "";
-        $this->job_title = "";
+        $this->category = "";
         $this->id_card = null;
         $this->profil_pic = null;
         $this->doctor_card = null;
