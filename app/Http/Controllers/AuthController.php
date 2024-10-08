@@ -40,16 +40,7 @@ class AuthController extends Controller
         if(Auth::attempt(['phone' => $validated_data['phone'], 'password' => $validated_data['password']]))
         {
 
-            $credentials = $request->only('phone', 'password');
-            $token = Auth::attempt($credentials);
-            if(!$token)
-            {
-                return response()->json([
-                        "status" => "error",
-                        "message" => "Identifiants invalides"
-                    ],
-                    Response::HTTP_UNAUTHORIZED);
-            }
+          
 
             $user = Auth::user();
             $token = $user->createToken('secret')->plainTextToken;
