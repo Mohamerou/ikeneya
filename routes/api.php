@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
 
 // Auth protected routes
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-profile', [App\Http\Controllers\UserController::class, 'profile']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('user', [App\Http\Controllers\AuthController::class, 'user']);
@@ -75,7 +75,7 @@ Route::post('medical-data-create', [App\Http\Controllers\MedicalCardController::
 Route::put('medical-data-update/{id}', [App\Http\Controllers\MedicalCardController::class, 'update']);
 Route::delete('medical-data-delete/{id}', [App\Http\Controllers\MedicalCardController::class, 'destroy']);
 
-// });
+});
 
 
 
