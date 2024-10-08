@@ -14,5 +14,5 @@ echo "Caching routes..."
 php artisan view:clear
 php artisan view:cache
 
-echo "Running First Time migrations..."
+# echo "Running First Time migrations..."
 # php artisan migrate:fresh --seed --force
